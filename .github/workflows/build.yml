@@ -25,7 +25,7 @@ jobs:
       run: npm run build
 
     - name: Output folder structure
-      run: ls -R build
+      run: ls
 
     - name: Preserve CNAME
       run: echo "portfolio.howu.run" > build/CNAME
