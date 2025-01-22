@@ -1,0 +1,1 @@
+declare module '@shinyongjun/react-fullpage/css';
