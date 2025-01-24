@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Header from "./components/Header.tsx";
 import {
   FullpageContainer,
   FullpageSection,
@@ -11,25 +12,21 @@ export default function App() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 z-50 w-full">
-        <nav className="flex justify-between text-white mx-[40px] mt-[12px] ">
-          <div>Howu</div>
-          <div className="opacity-50">
-            <img src="/menu.svg" />
-          </div>
-        </nav>
-      </header>
+      <Header />
       <FullpageContainer
         activeIndex={activeIndex}
         setActiveIndex={setActiveIndex}
       >
-        <FullpageSection name="first">
+        <FullpageSection name="Home">
           <Home />
         </FullpageSection>
-        <FullpageSection name="second">
+        <FullpageSection name="Intro">
           <div>Section 2</div>
         </FullpageSection>
-        <FullpageSection name="third">
+        <FullpageSection name="Project">
+          <div>Section 3</div>
+        </FullpageSection>
+        <FullpageSection name="Activities">
           <div>Section 3</div>
         </FullpageSection>
       </FullpageContainer>
