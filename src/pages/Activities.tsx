@@ -1,7 +1,7 @@
 
 function Activities() {
   return (
-    <div>Activities</div>
+    <div></div>
   )
 }
 
