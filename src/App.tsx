@@ -1,18 +1,21 @@
 import { useState } from "react";
-import Header from "./components/Header.tsx";
+import Header from "./components/Header";
 import {
   FullpageContainer,
   FullpageSection,
 } from "@shinyongjun/react-fullpage";
 import "@shinyongjun/react-fullpage/css";
-import { Home } from "./pages";
+import { Activities, Home, Intro, Project } from "./pages";
 
 export default function App() {
-  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  // 조건에 따라 헤더의 텍스트 색상 결정
+  const textColor = (activeIndex === 0 || activeIndex === 2) ? 'text-white' : 'text-black';
 
   return (
     <>
-      <Header />
+      <Header textColor={textColor} />
       <FullpageContainer
         activeIndex={activeIndex}
         setActiveIndex={setActiveIndex}
@@ -21,13 +24,13 @@ export default function App() {
           <Home />
         </FullpageSection>
         <FullpageSection name="Intro">
-          <div>Section 2</div>
+          <Intro />
         </FullpageSection>
         <FullpageSection name="Project">
-          <div>Section 3</div>
+          <Project />
         </FullpageSection>
         <FullpageSection name="Activities">
-          <div>Section 3</div>
+          <Activities />
         </FullpageSection>
       </FullpageContainer>
     </>

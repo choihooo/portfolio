@@ -1,7 +1,11 @@
 import { useRef, useEffect, useState } from "react";
 import { useSpring, animated, config } from "@react-spring/web";
 
-function Header() {
+interface HeaderProps {
+  textColor: string;
+}
+
+function Header({ textColor }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -21,8 +25,7 @@ function Header() {
 
   const menuAnimation = useSpring({
     transform: menuOpen ? "translateX(0%)" : "translateX(100%)",
-    opacity: menuOpen ? 1 : 0,
-    config: config.stiff,
+    opacity: menuOpen ? 1 : 0,  
     onRest: () => {
       if (!menuOpen) {
         setMenuOpen(false); // Ensure menu is set to closed after animation completes
@@ -75,13 +78,15 @@ function Header() {
     delay: menuOpen ? 700 : 200,
     config: config.wobbly,
   });
-
+  const menuStyle = textColor === "text-black" ? { filter: "invert(1)" } : {};
   return (
     <header className="fixed top-0 left-0 z-50 w-full">
-      <nav className="flex items-center justify-between px-5 py-5 text-white">
+      <nav
+        className={`flex items-center justify-between px-5 py-5 ${textColor}`}
+      >
         <div>Howu</div>
         <div onClick={() => setMenuOpen(!menuOpen)}>
-          <img src="/menu.svg" alt="Menu" className="cursor-pointer" />
+          <img src="/menu.svg" alt="Menu" className="cursor-pointer" style={menuStyle} />
         </div>
       </nav>
       <animated.div
