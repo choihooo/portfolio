@@ -38,7 +38,7 @@ function Home() {
     }
   };
   return (
-    <div className="grid w-screen h-screen grid-cols-2 text-white bg-black">
+    <div className="grid w-screen h-screen grid-cols-2 overflow-hidden text-white bg-black">
       <div
         onClick={handleTextChange}
         className="flex flex-col justify-center gap-4 ml-[30%] h-full"

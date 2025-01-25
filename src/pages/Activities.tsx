@@ -1,8 +1,8 @@
 
 function Activities() {
   return (
-    <div></div>
-  )
+    <div className="overflow-hidden"></div>
+  ) 
 }
 
 export default Activities

@@ -34,7 +34,7 @@ function Intro() {
   return (
     <div
       ref={ref}
-      className="flex flex-col items-center justify-center w-screen h-screen text-black bg-white"
+      className="flex flex-col items-center justify-center w-screen h-screen overflow-hidden text-black bg-white"
     >
       <div className="w-72 h-72">
         <img src="developer.svg" />

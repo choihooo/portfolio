@@ -1,0 +1,66 @@
+{
+  "projectOverview": {
+    "name": "Mopping",
+    "purpose": "실시간 투표 및 설문조사 플랫폼",
+    "developmentPeriod": "2023.07 - 2023.09",
+    "projectType": "팀 프로젝트 (4인)",
+    "myRole": "프론트엔드 개발",
+    "image": "https://quick-gem-34f.notion.site/image/attachment%3A7261bae1-5c55-40a3-aec9-f04ee0a9c2d7%3Aimage.png?table=block&id=185ed6b7-c1e9-8001-b6f9-cf3a5bab078b&spaceId=f0bad152-0e98-4f41-95a9-07a0ab10ce36&width=1420&userId=&cache=v2"
+  },
+  "techStack": {
+    "frontend": ["React", "TypeScript"],
+    "stateManagement": ["Recoil"],
+    "styling": ["Tailwind CSS"],
+    "buildTool": ["Vite"],
+    "deployment": ["Vercel"],
+    "additionalLibraries": ["React-Hook-Form", "Framer-Motion"]
+  },
+  "coreFeatures": [
+    {
+      "name": "실시간 투표 기능",
+      "technicalChallenges": [
+        "WebSocket을 통한 실시간 데이터 동기화",
+        "대규모 동시 접속 시 성능 최적화"
+      ],
+      "solution": "메모이제이션 및 부분 렌더링 최적화"
+    },
+    {
+      "name": "투표 결과 시각화",
+      "technicalChallenges": ["실시간 차트 업데이트", "다양한 투표 유형 대응"],
+      "solution": "Recharts 라이브러리 활용, 동적 렌더링 구현"
+    }
+  ],
+  "personalContribution": {
+    "featuresImplemented": [
+      "실시간 투표 인터페이스",
+      "결과 대시보드",
+      "사용자 인증 플로우"
+    ],
+    "performanceOptimization": [
+      "초기 로딩 시간 40% 단축",
+      "불필요한 리렌더링 제거"
+    ],
+    "architectureDesign": ["컴포넌트 모듈화", "상태 관리 구조 설계"]
+  },
+  "technicalAchievements": {
+    "performanceMetrics": [
+      "First Contentful Paint: 1.2s → 0.8s",
+      "Time to Interactive: 2.1s → 1.5s"
+    ],
+    "codeQuality": ["ESLint 및 Prettier 도입", "테스트 커버리지 70% 달성"],
+    "userExperience": ["반응형 디자인 구현", "접근성 개선"]
+  },
+  "projectLinks": {
+    "githubRepository": "https://github.com/username/mopping",
+    "deploymentLink": "https://mopping.vercel.app",
+    "demoVideo": "https://youtu.be/example"
+  },
+  "futureImprovements": [
+    "WebSocket 성능 최적화",
+    "소셜 로그인 추가",
+    "국제화(i18n) 지원",
+    "테스트 커버리지 90% 목표",
+    "서버사이드 렌더링(SSR) 도입 검토",
+    "접근성 WCAG 2.1 완전 준수"
+  ]
+}

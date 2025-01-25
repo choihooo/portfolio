@@ -25,7 +25,7 @@ function Header({ textColor }: HeaderProps) {
 
   const menuAnimation = useSpring({
     transform: menuOpen ? "translateX(0%)" : "translateX(100%)",
-    opacity: menuOpen ? 1 : 0,  
+    opacity: menuOpen ? 1 : 0,
     onRest: () => {
       if (!menuOpen) {
         setMenuOpen(false); // Ensure menu is set to closed after animation completes
@@ -86,7 +86,12 @@ function Header({ textColor }: HeaderProps) {
       >
         <div>Howu</div>
         <div onClick={() => setMenuOpen(!menuOpen)}>
-          <img src="/menu.svg" alt="Menu" className="cursor-pointer" style={menuStyle} />
+          <img
+            src="/menu.svg"
+            alt="Menu"
+            className="cursor-pointer"
+            style={menuStyle}
+          />
         </div>
       </nav>
       <animated.div
