@@ -81,15 +81,12 @@ function Header({ activeIndex }: HeaderProps) {
     config: config.wobbly,
   });
   const menuStyle = textColor === "text-black" ? { filter: "invert(1)" } : {};
-  const activeText = items[activeIndex] || "Home";
+
   return (
-    <header className="fixed top-0 left-0 z-50 w-full ">
+    <header className={`fixed top-0 left-0 z-50 w-full`}>
       <nav
         className={`relative flex items-center justify-between px-5 py-5 ${textColor}`}
       >
-        <div className={`fixed ${textColor} top-[60px] left-10 text-[60px] font-bold`}>
-          {activeText}
-        </div>
         <div>Howu</div>
         <div onClick={() => setMenuOpen(!menuOpen)}>
           <img

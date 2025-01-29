@@ -34,10 +34,10 @@ const ProjectButton: React.FC<ProjectButtonProps> = ({
 
   return (
     <div
-      className="text-black p-5 bg-white rounded-lg w-[400px] h-[300px] cursor-pointer"
+      className="text-black p-5 bg-white rounded-lg w-[300px] min-h-[300px] cursor-pointer md:w-[400px] md:h-[300px]"
       onClick={onClick}
     >
-      <h2 className="text-3xl font-bold text-left ">{name}</h2>
+      <h2 className="text-3xl font-bold text-left">{name}</h2>
       <p className="h-[100px] mt-5">{description}</p>
       <div className="p-2 mt-3 border border-solid rounded-lg border-me">
         <p>{formattedTechStack}</p>

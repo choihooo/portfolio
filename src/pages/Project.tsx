@@ -12,7 +12,6 @@ interface TechStack {
   additionalLibraries: string[];
 }
 
-// 프로젝트 정보를 위한 인터페이스
 interface ProjectOverview {
   description: string;
   name: string;
@@ -20,24 +19,20 @@ interface ProjectOverview {
   id: string;
 }
 
-// 실제 프로젝트 아이템 인터페이스
 interface ProjectItem {
   projectOverview: ProjectOverview;
-  type: "project"; // 모든 프로젝트 아이템에 'project' 타입을 명시적으로 추가
+  type: "project";
   techStack: TechStack;
 }
 
-// 메인 및 서브 프로젝트를 구분하는 버튼 아이템 인터페이스
 interface ButtonItem {
   type: "mainButton" | "subButton";
   label: string;
   id: string;
 }
 
-// 프로젝트 아이템과 버튼 아이템을 포함할 수 있는 유니언 타입
 type ProjectOrButton = ProjectItem | ButtonItem;
 
-// 버튼 아이템인지 확인하는 타입 가드
 function isButtonItem(item: ProjectOrButton): item is ButtonItem {
   return item.type === "mainButton" || item.type === "subButton";
 }
@@ -53,9 +48,11 @@ const Project: React.FC = () => {
       .then((response) => response.json())
       .then((data) => {
         setProjects(
-          data.projects.map((project: any) => ({ ...project, type: "project" }))
+          data.projects.map((project: any) => ({
+            ...project,
+            type: "project",
+          }))
         );
-        console.log(data);
       })
       .catch((error) => console.error("Failed to fetch projects", error));
   }, []);
@@ -88,8 +85,8 @@ const Project: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-screen h-screen overflow-hidden text-white bg-black">
-      <div className="mt-[100px] px-8">
+    <div className="flex flex-col items-center justify-center w-screen min-h-screen p-5 text-white bg-black md:overflow-hidden">
+      <div className="mt-[100px] md:px-8">
         <div className="flex justify-end gap-4 mb-3">
           <button
             onClick={handlePrevPage}
@@ -106,7 +103,7 @@ const Project: React.FC = () => {
             ▶
           </button>
         </div>
-        <div className="grid grid-cols-3 grid-rows-2 gap-6">
+        <div className="grid justify-center grid-cols-1 grid-rows-2 gap-6 md:grid-cols-3">
           {currentItems.map((item, index) => {
             if (isButtonItem(item)) {
               return <NonProjectButton key={index} project={item.label} />;
