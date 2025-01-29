@@ -1,8 +1,7 @@
 
+
 function Activities() {
-  return (
-    <div className="overflow-hidden"></div>
-  ) 
+  return <div className="w-screen h-screen overflow-hidden"></div>;
 }
 
-export default Activities
+export default Activities;

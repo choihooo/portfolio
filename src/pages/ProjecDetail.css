@@ -1,0 +1,26 @@
+.toastui-editor-contents h1,
+.toastui-editor-contents h2,
+.toastui-editor-contents h3,
+.toastui-editor-contents h4,
+.toastui-editor-contents h5,
+.toastui-editor-contents h6 {
+  color: #0070c0;
+}
+
+.toastui-editor-contents table th {
+  background: #fff;
+}
+
+.badge {
+  display: flex;
+  gap: 2px;
+}
+
+.md-mode,
+.ww-mode {
+  display: none;
+}
+
+.project-detail {
+  height: 100% !important;
+}

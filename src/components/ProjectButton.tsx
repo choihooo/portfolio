@@ -39,7 +39,7 @@ const ProjectButton: React.FC<ProjectButtonProps> = ({
     >
       <h2 className="text-3xl font-bold text-left ">{name}</h2>
       <p className="h-[100px] mt-5">{description}</p>
-      <div className="p-2 mt-3 border border-solid rounded-lg border-accent">
+      <div className="p-2 mt-3 border border-solid rounded-lg border-me">
         <p>{formattedTechStack}</p>
       </div>
     </div>

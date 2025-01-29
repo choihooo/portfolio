@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Viewer } from "@toast-ui/react-editor";
+import TuiViewer from "../components/Tuiviewer";
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
 import { useParams } from "react-router-dom";
+import "./ProjecDetail.css";
 
 const ProjectDetail: React.FC = () => {
   const { projectId } = useParams<string>();
@@ -31,9 +32,9 @@ const ProjectDetail: React.FC = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="flex items-center justify-center">
+    <div className={`flex items-center justify-center `}>
       <div className="w-full max-w-xl p-4">
-        <Viewer initialValue={markdown} />
+        <TuiViewer initialValue={markdown} />
       </div>
     </div>
   );

@@ -19,7 +19,7 @@ function Intro() {
       },
       config: { duration: 1000 },
     });
-  const [textProps, setTextProps] = useSpring(() => ({
+  const [textProps] = useSpring(() => ({
     opacity: 1,
     transform: "translate(0%, 0%)",
     from: { opacity: 0, transform: "translate(0%, -100vh)" },
@@ -42,14 +42,14 @@ function Intro() {
         className="text-left text-[48px] font-bold"
         style={textProps}
       >
-        저는 <p className="inline text-accent">UX와 DX를 추구</p>하는 Front-end
+        저는 <p className="inline text-me">UX와 DX를 추구</p>하는 Front-end
         개발자 최호라고 합니다.
       </animated.div>
 
       <div className="grid grid-cols-2 gap-4 mt-8 text-[#5c5c5c]">
         <animated.div style={whyProps} className="p-4 w-[370px]">
           <div className="text-[28px] font-bold ">
-            <p className="inline text-accent text-[40px]">W</p>hy
+            <p className="inline text-me text-[40px]">W</p>hy
           </div>
           <div className="text-l">
             도전적인 문제를 만났을 때, 단순히 해결하는 것이 아니라 그 과정에서
@@ -58,7 +58,7 @@ function Intro() {
         </animated.div>
         <animated.div style={howProps} className="p-4 w-[370px]">
           <div className="font-bold text-[28px]">
-            <p className="inline text-accent text-[40px]">H</p>ow
+            <p className="inline text-me text-[40px]">H</p>ow
           </div>
           <div className="text-l">
             코드 리뷰와 지속적인 피드백을 통해 개인과 팀의 성장을 도모하며,
@@ -67,7 +67,7 @@ function Intro() {
         </animated.div>
         <animated.div style={whatProps} className="p-4 w-[370px]">
           <div className="font-bold text-[28px]">
-            <p className="inline text-accent text-[40px]">W</p>hat
+            <p className="inline text-me text-[40px]">W</p>hat
           </div>
           <div className="text-l">
             사용자 경험을 극대화하고, 동료 개발자 경험에 기여할 수 있는 재사용
@@ -76,7 +76,7 @@ function Intro() {
         </animated.div>
         <animated.div style={goalProps} className="p-4 w-[370px] ">
           <div className="text-[28px] font-bold">
-            <p className="inline text-accent text-[40px]">G</p>oal
+            <p className="inline text-me text-[40px]">G</p>oal
           </div>
           <div className="text-l">
             지속적인 기록과 동료 피드백을 통해 개인의 성장을 추구하며, 이를 통해
