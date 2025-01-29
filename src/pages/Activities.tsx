@@ -62,7 +62,7 @@ function Activities() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-screen min-h-screen overflow-hidden md:overflow-auto">
+    <div className="flex flex-col items-center justify-center w-screen min-h-screen overflow-hidden">
       <div className="flex justify-end gap-4 mb-3 max-w-[600px] min-w-[200px] w-[80%]">
         <button
           onClick={handlePrevPage}

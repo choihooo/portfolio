@@ -87,7 +87,7 @@ function Header({ activeIndex }: HeaderProps) {
       <nav
         className={`relative flex items-center justify-between px-5 py-5 ${textColor}`}
       >
-        <div className={`absolute ${textColor} top-[60px] left-10 text-[60px] font-bold`}>
+        <div className={`fixed ${textColor} top-[60px] left-10 text-[60px] font-bold`}>
           {activeText}
         </div>
         <div>Howu</div>
