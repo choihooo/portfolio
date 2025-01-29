@@ -9,7 +9,6 @@ function Header({ textColor }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // 메뉴 외부 클릭 감지
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -28,7 +27,7 @@ function Header({ textColor }: HeaderProps) {
     opacity: menuOpen ? 1 : 0,
     onRest: () => {
       if (!menuOpen) {
-        setMenuOpen(false); // Ensure menu is set to closed after animation completes
+        setMenuOpen(false);
       }
     },
   });

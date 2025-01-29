@@ -1,12 +1,14 @@
 interface NonProjectButtonProps {
-  project: string; 
+  project: string;
 }
 
 function NonProjectButton({ project }: NonProjectButtonProps) {
   return (
-    <div className="relative flex items-center justify-center w-full h-full">
+    <div className="flex items-center justify-center w-[400px] h-[300px] text-black text-[60px] bg-white rounded-md relative ">
       {project}
-      <div className="absolute right-5 bottom-5">화살표</div>
+      <div className="absolute flex text-sm right-5 bottom-5">
+        프로젝트 더보기 &rarr;
+      </div>
     </div>
   );
 }

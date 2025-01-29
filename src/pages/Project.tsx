@@ -1,151 +1,129 @@
-// src/pages/Project.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import projects, { StartButton, GridItem } from "../data/projects";
 import NonProjectButton from "../components/NonProjectButton";
+import ProjectButton from "../components/ProjectButton";
 
-// 타입 가드 함수
-function isStartButton(item: GridItem): item is StartButton {
-  return (
-    "type" in item && (item.type === "mainButton" || item.type === "subButton")
-  );
+interface TechStack {
+  frontend: string[];
+  stateManagement: string[];
+  styling: string[];
+  buildTool: string[];
+  deployment: string[];
+  additionalLibraries: string[];
+}
+
+// 프로젝트 정보를 위한 인터페이스
+interface ProjectOverview {
+  description: string;
+  name: string;
+  type: string; // 'main' 또는 'sub'
+  id: string;
+}
+
+// 실제 프로젝트 아이템 인터페이스
+interface ProjectItem {
+  projectOverview: ProjectOverview;
+  type: "project"; // 모든 프로젝트 아이템에 'project' 타입을 명시적으로 추가
+  techStack: TechStack;
+}
+
+// 메인 및 서브 프로젝트를 구분하는 버튼 아이템 인터페이스
+interface ButtonItem {
+  type: "mainButton" | "subButton";
+  label: string;
+  id: string;
+}
+
+// 프로젝트 아이템과 버튼 아이템을 포함할 수 있는 유니언 타입
+type ProjectOrButton = ProjectItem | ButtonItem;
+
+// 버튼 아이템인지 확인하는 타입 가드
+function isButtonItem(item: ProjectOrButton): item is ButtonItem {
+  return item.type === "mainButton" || item.type === "subButton";
 }
 
 const Project: React.FC = () => {
   const navigate = useNavigate();
+  const [projects, setProjects] = useState<ProjectItem[]>([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 6;
+
+  useEffect(() => {
+    fetch("/data/projects.json")
+      .then((response) => response.json())
+      .then((data) => {
+        setProjects(
+          data.projects.map((project: any) => ({ ...project, type: "project" }))
+        );
+        console.log(data);
+      })
+      .catch((error) => console.error("Failed to fetch projects", error));
+  }, []);
+
+  const mainProjects = projects.filter(
+    (project) => project.projectOverview.type === "main"
+  );
+  const subProjects = projects.filter(
+    (project) => project.projectOverview.type === "sub"
+  );
+
+  const allItems: ProjectOrButton[] = [
+    { type: "mainButton", label: "Main Projects", id: "main" },
+    ...mainProjects,
+    { type: "subButton", label: "Sub Projects", id: "sub" },
+    ...subProjects,
+  ];
+
+  const totalPages = Math.ceil(allItems.length / itemsPerPage);
+  const indexOfLastItem = (currentPage + 1) * itemsPerPage;
+  const indexOfFirstItem = currentPage * itemsPerPage;
+  const currentItems = allItems.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handlePrevPage = () => setCurrentPage(Math.max(0, currentPage - 1));
+  const handleNextPage = () =>
+    setCurrentPage(Math.min(totalPages - 1, currentPage + 1));
 
   const handleProjectClick = (projectId: string) => {
     navigate(`/project/${projectId}`);
   };
 
-  // 페이지당 표시할 아이템 수 (메인, 서브 시작 버튼 포함)
-  const itemsPerPage = 6; // 3x2 그리드
-  const allItems: GridItem[] = [];
-
-  // 메인 프로젝트와 서브 프로젝트 분리
-  const mainProjects = projects.filter((p) => p.type === "main");
-  const subProjects = projects.filter((p) => p.type === "sub");
-
-  // 메인 프로젝트 시작 버튼과 메인 프로젝트 추가
-  if (mainProjects.length > 0) {
-    allItems.push({ type: "mainButton", label: "Project" });
-    allItems.push(...mainProjects);
-  }
-
-  // 서브 프로젝트 시작 버튼과 서브 프로젝트 추가
-  if (subProjects.length > 0) {
-    allItems.push({ type: "subButton", label: "Sub Project" });
-    allItems.push(...subProjects);
-  }
-
-  const totalPages = Math.ceil(allItems.length / itemsPerPage);
-
-  // 현재 페이지 상태 (0부터 시작)
-  const [currentPage, setCurrentPage] = useState<number>(0);
-
-  // 현재 페이지에 표시할 아이템 목록
-  const indexOfLastItem = (currentPage + 1) * itemsPerPage;
-  const indexOfFirstItem = currentPage * itemsPerPage;
-  const currentItems = allItems.slice(indexOfFirstItem, indexOfLastItem);
-
-  // 남은 셀을 빈 셀로 채움
-  const emptyCells = itemsPerPage - currentItems.length;
-
-  // 이전 페이지로 이동
-  const handlePrevPage = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 0));
-  };
-
-  // 다음 페이지로 이동
-  const handleNextPage = () => {
-    setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1));
-  };
-
   return (
     <div className="flex flex-col items-center justify-center w-screen h-screen overflow-hidden text-white bg-black">
-      {/* 그리드 컨테이너를 감싸는 div */}
       <div className="mt-[100px] px-8">
-        {/* 화살표 버튼을 그리드 상단 우측에 배치 */}
         <div className="flex justify-end gap-4 mb-3">
           <button
             onClick={handlePrevPage}
-            aria-label="이전 페이지"
+            aria-label="Previous Page"
             disabled={currentPage === 0}
           >
             ◀
           </button>
           <button
             onClick={handleNextPage}
-            aria-label="다음 페이지"
+            aria-label="Next Page"
             disabled={currentPage === totalPages - 1}
           >
             ▶
           </button>
         </div>
-
-        {/* 그리드 컨테이너 */}
         <div className="grid grid-cols-3 grid-rows-2 gap-6">
           {currentItems.map((item, index) => {
-            if (isStartButton(item)) {
-              if (item.type === "mainButton") {
-                return (
-                  <div
-                    key={`mainButton-${index}`}
-                    className="flex items-center justify-center px-6 py-4 w-[400px] h-[300px] text-lg text-black transition duration-200 bg-white rounded-md "
-                    aria-label="메인 프로젝트 시작"
-                  >
-                    <NonProjectButton project={item.label} />
-                  </div>
-                );
-              } else if (item.type === "subButton") {
-                return (
-                  <div
-                    key={`subButton-${index}`}
-                    className="flex items-center justify-center w-[400px] h-[300px] px-6 py-4 text-lg text-black transition duration-200 bg-white rounded-md "
-                    aria-label="서브 프로젝트 시작"
-                  >
-                    <NonProjectButton project={item.label} />
-                  </div>
-                );
-              }
+            if (isButtonItem(item)) {
+              return <NonProjectButton key={index} project={item.label} />;
             } else {
               return (
-                <button
-                  key={item.id}
-                  onClick={() => handleProjectClick(item.id)}
-                  className="flex items-center justify-center w-[400px] h-[300px] px-6 py-4 text-lg transition duration-200 bg-white text-black rounded-md hover:bg-slate-300 "
-                  aria-label={`프로젝트 ${item.label} 보기`}
-                >
-                  {item.label}
-                </button>
+                <ProjectButton
+                  key={index}
+                  name={item.projectOverview.name}
+                  description={item.projectOverview.description}
+                  techStack={item.techStack}
+                  onClick={() => handleProjectClick(item.projectOverview.name)}
+                />
               );
             }
           })}
-
-          {/* 남은 셀을 빈 셀로 채움 */}
-          {emptyCells > 0 &&
-            Array.from({ length: emptyCells }).map((_, index) => (
-              <div
-                key={`empty-${index}`}
-                className="flex items-center justify-center w-[400px] h-[300px] px-6 py-4 text-lg transition duration-200 bg-white text-black rounded-md "
-              ></div>
-            ))}
         </div>
       </div>
-
-      {/* 페이지 인디케이터를 그리드 바로 아래에 배치 */}
-      {totalPages > 1 && (
-        <div className="flex mt-4 space-x-2">
-          {Array.from({ length: totalPages }).map((_, index) => (
-            <div
-              key={index}
-              className={`w-3 h-3 rounded-full ${
-                index === currentPage ? "bg-white" : "bg-gray-500"
-              }`}
-            ></div>
-          ))}
-        </div>
-      )}
     </div>
   );
 };

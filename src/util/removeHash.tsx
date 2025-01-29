@@ -1,4 +1,3 @@
-// src/utils/removeHash.ts
 export const removeHash = () => {
     if (window.location.hash) {
       history.replaceState(

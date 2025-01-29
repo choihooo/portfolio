@@ -7,6 +7,9 @@ export default {
         "slide-in": "slideInFromSide 0.5s ease-out forwards",
         "float-up-down": "floatUpDown 2s ease-in-out infinite",
       },
+      colors: {
+        accent: "#0070c0",
+      },
     },
   },
   plugins: [],
