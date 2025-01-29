@@ -33,20 +33,20 @@ function Intro() {
   return (
     <div
       ref={ref}
-      className="flex flex-col items-center justify-center w-screen h-screen overflow-hidden text-black bg-white"
+      className="flex flex-col items-center justify-center w-screen text-black bg-white md:h-screen md:overflow-hidden"
     >
       <div className="w-72 h-72">
         <img src="developer.svg" />
       </div>
       <animated.div
-        className="text-5xl font-bold text-left"
+        className="p-4 text-4xl font-bold text-left"
         style={textProps}
       >
         저는 <p className="inline text-me">UX와 DX를 추구</p>하는 Front-end
         개발자 최호라고 합니다.
       </animated.div>
 
-      <div className="grid grid-cols-2 gap-4 mt-8 text-[#5c5c5c]">
+      <div className="grid md:grid-cols-2 gap-4 mt-8 text-[#5c5c5c]">
         <animated.div style={whyProps} className="p-4 w-[370px]">
           <div className="text-[28px] font-bold ">
             <p className="inline text-me text-[40px]">W</p>hy
