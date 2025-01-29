@@ -10,8 +10,7 @@ interface MainLayoutContext {
 
 const MainLayout: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
-  const textColor: string =
-    activeIndex === 0 || activeIndex === 2 ? "text-white" : "text-black";
+
 
   useEffect(() => {
     setActiveIndex(0);
@@ -19,7 +18,7 @@ const MainLayout: React.FC = () => {
   }, [location.pathname, location.search]);
   return (
     <>
-      <Header textColor={textColor} />
+      <Header activeIndex={activeIndex} />
 
       <Outlet context={{ activeIndex, setActiveIndex }} />
     </>

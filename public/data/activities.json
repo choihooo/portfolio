@@ -1,0 +1,51 @@
+{
+  "experience": [
+    {
+      "date": "2024.08",
+      "title": "한국대학생IT경영학회",
+      "organization": "한국대학생IT경영학회",
+      "role": "대외협력 팀원",
+      "details": [
+        "SKT 데이터 플랫폼 기획 제작사업 PM",
+        "정책, 공공 플랫폼 '폭염' 프로젝트 리드",
+        "Next.js SEO 최적화 전략 및 구축 방법에 대한 지원",
+        "블록체인 기반 레터링 캠페인 기획"
+      ],
+      "image": "https://img.notionusercontent.com/s3/prod-files-secure%2Ff0bad152-0e98-4f41-95a9-07a0ab10ce36%2F51a8438f-6b7f-4e80-a853-b112b5a5ac05%2Fa874f0be-e8cd-4efb-aec4-d83861a28d72.png/size/w=1420?exp=1738255525&sig=COC6SSmDf5w_B-CoL-X-p-F1VQQzfw7TAV2PZGq5HkY"
+    },
+    {
+      "date": "2025.2.1 - 2025.4.30",
+      "organization": "웅진씽크빅",
+      "title": "유데미 러닝크루 리더 2기",
+      "role": "대외활동",
+      "details": [
+        "Next.js 15 & React - 완벽 가이드 강의 스터디 리더"
+      ],
+      "image": ""
+    },
+    {
+      "date": "2024.08",
+      "title": "GDSC",
+      "organization": "GDSC",
+      "role": "대외활동",
+      "details": [
+        "\"모던 리액트 딥다이브\" 독서 스터디",
+        "반응형 인스타그램 클론 코딩",
+        "DevFest 참여"
+      ],
+      "image": "https://img.notionusercontent.com/s3/prod-files-secure%2Ff0bad152-0e98-4f41-95a9-07a0ab10ce36%2F7cd80e6b-033c-4ddd-9377-a87f0e5ca1b5%2FF9FE79E1-5416-4E15-8CB5-16400809F322_1_201_a.heic/size/w=2000?exp=1738257290&sig=rZkA3yIW6Nyr0wThhPyKRcMbTqj6_L5NFAwgqr10bHY"
+    },
+    {
+      "date": "2021.09 - 2021.11",
+      "organization": "한국정보기술학회",
+      "title": "2021 한국정보기술학회 추계 대학생 논문 경진대회 금상",
+      "role": "수상",
+      "details": [
+        "논문 발표",
+        "라이다 데이터와 모노 카메라 데이터 매핑 알고리즘 구현",
+        "기존 자율주행드론보다 가격 약 30% 감소"
+      ],
+      "image": "https://img.notionusercontent.com/s3/prod-files-secure%2Ff0bad152-0e98-4f41-95a9-07a0ab10ce36%2Fdce7af3d-0aac-4abd-bf1f-79082bf3d7b6%2FGroup_16.png/size/w=1420?exp=1738257292&sig=FkxfxhsVtCJ2CroH1IwPwYVLU4cTGYA_GWv9QJnAebU"
+    }
+  ]
+}

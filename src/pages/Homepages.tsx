@@ -21,7 +21,7 @@ const HomePage: React.FC = () => {
       <FullpageSection name="Intro">
         <Intro />
       </FullpageSection>
-      <FullpageSection name="Project">
+      <FullpageSection name="Projects">
         <Project />
       </FullpageSection>
       <FullpageSection name="Activities">

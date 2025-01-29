@@ -2,12 +2,15 @@ import { useRef, useEffect, useState } from "react";
 import { useSpring, animated, config } from "@react-spring/web";
 
 interface HeaderProps {
-  textColor: string;
+  activeIndex: number;
 }
 
-function Header({ textColor }: HeaderProps) {
+function Header({ activeIndex }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  const textColor: string =
+    activeIndex === 0 || activeIndex === 2 ? "text-white" : "text-black";
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -32,7 +35,7 @@ function Header({ textColor }: HeaderProps) {
     },
   });
 
-  const items = ["Home", "Intro", "Project", "Activities"];
+  const items = ["Home", "Intro", "Projects", "Activities"];
   const menuItems = items.map((item, index) => {
     const delay = menuOpen ? index * 100 : (items.length - index - 1) * 100;
     const itemAnimation = useSpring({
@@ -78,11 +81,15 @@ function Header({ textColor }: HeaderProps) {
     config: config.wobbly,
   });
   const menuStyle = textColor === "text-black" ? { filter: "invert(1)" } : {};
+  const activeText = items[activeIndex] || "Home";
   return (
-    <header className="fixed top-0 left-0 z-50 w-full">
+    <header className="fixed top-0 left-0 z-50 w-full ">
       <nav
-        className={`flex items-center justify-between px-5 py-5 ${textColor}`}
+        className={`relative flex items-center justify-between px-5 py-5 ${textColor}`}
       >
+        <div className={`absolute ${textColor} top-[60px] left-10 text-[60px] font-bold`}>
+          {activeText}
+        </div>
         <div>Howu</div>
         <div onClick={() => setMenuOpen(!menuOpen)}>
           <img

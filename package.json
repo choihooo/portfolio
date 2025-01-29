@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@fullpage/react-fullpage": "^0.1.48",
+    "@radix-ui/react-accordion": "^1.2.2",
+    "@radix-ui/react-separator": "^1.1.1",
     "@react-spring/web": "^9.7.5",
     "@shinyongjun/react-fullpage": "^1.10.0",
     "@toast-ui/editor": "^3.2.2",
