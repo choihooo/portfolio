@@ -1,0 +1,85 @@
+{
+  "projects": [
+    {
+      "projectOverview": {
+        "name": "Moping",
+        "purpose": "실시간 투표 및 설문조사 플랫폼",
+        "developmentPeriod": "2023.07 - 2023.09",
+        "projectType": "팀 프로젝트 (4인)",
+        "myRole": "프론트엔드 개발",
+        "image": "https://example.com/project-image.png",
+        "type": "main",
+        "description": "장소를 아카이빙해 약속 장소를 투표로 정하는 플랫폼"
+      },
+      "techStack": {
+        "frontend": ["React", "TypeScript"],
+        "stateManagement": ["Recoil"],
+        "styling": ["Tailwind CSS"],
+        "buildTool": ["Vite"],
+        "deployment": ["Vercel"],
+        "additionalLibraries": ["React-Hook-Form", "Framer-Motion"]
+      },
+      "coreFeatures": [
+        {
+          "name": "동영상 콘텐츠 스트리밍",
+          "technicalChallenges": [
+            "동영상 스트리밍 최적화",
+            "대용량 데이터 처리"
+          ],
+          "solution": "클라우드 스토리지와 CDN을 활용한 스트리밍 최적화"
+        },
+        {
+          "name": "사용자 진도 관리",
+          "technicalChallenges": ["사용자 상태 관리", "복잡한 UI 상호작용"],
+          "solution": "Vuex를 사용한 상태 관리와 Vue 컴포넌트의 동적 데이터 바인딩"
+        }
+      ],
+      "projectLinks": {
+        "githubRepository": "https://github.com/username/mopping",
+        "deploymentLink": "https://mopping.vercel.app",
+        "demoVideo": "https://youtu.be/example"
+      },
+      "futureImprovements": ["ㅁㄴㅇㅁㄴㅇ", "ㅁㄴㅇㅁㄴㅇㅁㄴㅇ"]
+    },
+    {
+      "projectOverview": {
+        "name": "EduPlatform",
+        "purpose": "온라인 교육 콘텐츠 제공 및 관리 플랫폼",
+        "developmentPeriod": "2024.01 - 2024.06",
+        "projectType": "개인 프로젝트",
+        "myRole": "전체 개발",
+        "image": "https://example.com/edu-platform-image.png",
+        "type": "sub",
+        "description": "이 프로젝트는 뭐시기 뭐시기 입니다."
+      },
+      "techStack": {
+        "frontend": ["Vue.js", "JavaScript"],
+        "stateManagement": ["Vuex"],
+        "styling": ["Vuetify"],
+        "buildTool": ["Webpack"],
+        "deployment": ["Firebase"],
+        "additionalLibraries": ["Vue-router", "Axios"]
+      },
+      "coreFeatures": [
+        {
+          "name": "동영상 콘텐츠 스트리밍",
+          "technicalChallenges": [
+            "동영상 스트리밍 최적화",
+            "대용량 데이터 처리"
+          ],
+          "solution": "클라우드 스토리지와 CDN을 활용한 스트리밍 최적화"
+        },
+        {
+          "name": "사용자 진도 관리",
+          "technicalChallenges": ["사용자 상태 관리", "복잡한 UI 상호작용"],
+          "solution": "Vuex를 사용한 상태 관리와 Vue 컴포넌트의 동적 데이터 바인딩"
+        }
+      ],
+      "projectLinks": {
+        "githubRepository": "https://github.com/username/eduplatform",
+        "deploymentLink": "https://eduplatform.firebase.app",
+        "demoVideo": "https://youtu.be/exampleEdu"
+      }
+    }
+  ]
+}
