@@ -1,20 +1,23 @@
 {
   "experience": [
     {
-      "date": "2024.08",
+      "date": "2024.08 ~",
       "title": "한국대학생IT경영학회",
       "organization": "한국대학생IT경영학회",
       "role": "대외협력 팀원",
       "details": [
-        "SKT 데이터 플랫폼 기획 제작사업 PM",
-        "정책, 공공 플랫폼 '폭염' 프로젝트 리드",
-        "Next.js SEO 최적화 전략 및 구축 방법에 대한 지원",
-        "블록체인 기반 레터링 캠페인 기획"
+        "SKT 데보션 마이페이지 개선과제 PM",
+        "장소 공유 플랫폼 \"모핑\" 프론트엔드 리드",
+        "\"Next.js로 SEO 최적화 하기\" 주제로 발표 세션 진행",
+        "운영진으로서 네트워킹 행사 기획"
       ],
       "image": "https://img.notionusercontent.com/s3/prod-files-secure%2Ff0bad152-0e98-4f41-95a9-07a0ab10ce36%2F51a8438f-6b7f-4e80-a853-b112b5a5ac05%2Fa874f0be-e8cd-4efb-aec4-d83861a28d72.png/size/w=1420?exp=1738255525&sig=COC6SSmDf5w_B-CoL-X-p-F1VQQzfw7TAV2PZGq5HkY"
+      ,"post":{
+        "모핑 리팩토링 1 - 계획 세우기": "https://blog.howu.run/post/%EB%AA%A8%ED%95%91%20%EB%A6%AC%ED%8C%A9%ED%86%A0%EB%A7%81%201%20-%20%EA%B3%84%ED%9A%8D%20%EC%84%B8%EC%9A%B0%EA%B8%B0"
+      }
     },
     {
-      "date": "2025.2.1 - 2025.4.30",
+      "date": "2025.2.1 ~ 2025.4.30",
       "organization": "웅진씽크빅",
       "title": "유데미 러닝크루 리더 2기",
       "role": "대외활동",
