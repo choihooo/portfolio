@@ -14,6 +14,7 @@ interface Experience {
   role: string;
   details: string[];
   image: string;
+  post?: { [key: string]: string }; // 포스트 항목 추가 (key: string, url: string 형식)
 }
 
 function Activities() {
@@ -61,8 +62,8 @@ function Activities() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-screen h-screen overflow-hidden">
-      <div className="flex justify-end gap-4 mb-3 w-[600px]">
+    <div className="flex flex-col items-center justify-center w-screen min-h-screen overflow-hidden md:overflow-auto">
+      <div className="flex justify-end gap-4 mb-3 max-w-[600px] min-w-[200px] w-[80%]">
         <button
           onClick={handlePrevPage}
           aria-label="Previous Page"
@@ -78,18 +79,18 @@ function Activities() {
           ▶
         </button>
       </div>
-      <div className="w-[600px]">
+      <div className="max-w-[600px] min-w-[200px] w-[80%] h-[300px]">
         <Accordion type="single" collapsible className="w-full">
           {currentItems.map((experience, index) => (
             <AccordionItem key={index} value={`item-${index}`}>
               <AccordionTrigger>
-                <div>
+                <div className="text-2xl">
                   {experience.title}
                   <p className="text-xs text-[#5c5c5c]">{experience.date}</p>
                 </div>
               </AccordionTrigger>
               <AccordionContent>
-                <div className="flex h-5 gap-2">
+                <div className="flex h-5 gap-2 text-xs">
                   {experience.organization} <Separator orientation="vertical" />
                   {experience.role}
                 </div>
@@ -103,12 +104,37 @@ function Activities() {
                   />
                 </div>
                 <Separator className="my-2" />
-                <div>
+                <div className="text-base">
                   <ul className="pl-5 list-decimal">
                     {experience.details.map((detail, idx) => (
                       <li key={idx}>{detail}</li>
                     ))}
                   </ul>
+
+                  {experience.post && (
+                    <>
+                      <Separator className="my-2" />
+                      <div className="mt-4">
+                        <h4 className="font-bold">포스트 링크:</h4>
+                        <ul className="pl-5 list-disc">
+                          {Object.entries(experience.post).map(
+                            ([key, url], idx) => (
+                              <li key={idx}>
+                                <a
+                                  href={url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-me"
+                                >
+                                  {key}
+                                </a>
+                              </li>
+                            )
+                          )}
+                        </ul>
+                      </div>
+                    </>
+                  )}
                 </div>
               </AccordionContent>
             </AccordionItem>
@@ -119,7 +145,7 @@ function Activities() {
       {/* 모달 */}
       {isModalOpen && (
         <div
-          className="fixed top-[300vh] left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50"
+          className="fixed top-[300vh] left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-90"
           onClick={handleModalClick}
         >
           <div className="relative w-auto h-auto">
@@ -130,7 +156,7 @@ function Activities() {
             />
             <button
               onClick={closeModal}
-              className="absolute top-0 right-0 p-2 text-white bg-black "
+              className="absolute top-0 right-0 p-2 text-white bg-black"
             >
               X
             </button>
