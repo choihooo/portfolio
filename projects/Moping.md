@@ -12,15 +12,25 @@
 
 ## **기술 스택**
 
-**frontend:** React, TypeScript
+**frontend:**
 
-**stateManagement:** Recoil
+<p class="badge">
+<img alt="React" src="https://img.shields.io/badge/React-20232A.svg?&style=for-the-badge&logo=react&logoColor=61DAFB"/>
+<img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-007ACC.svg?&style=for-the-badge&logo=typescript&logoColor=white"/>
+</p>
 
-**styling:** Tailwind CSS
+**stateManagement:** 
 
-**buildTool:** Vite
+<img alt="Zustand" src="https://img.shields.io/badge/Zustand-764ABC.svg?style=for-the-badge&logo=Zustand&logoColor=white"/>
 
-**deployment:** Vercel
+**styling:** 
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+
+**buildTool:** 
+![Vite](https://img.shields.io/badge/Vite-B73BFE.svg?style=for-the-badge&logo=vite&logoColor=white)
+
+**deployment:** 
+<img alt="Vercel" src="https://img.shields.io/badge/Vercel-black.svg?style=for-the-badge&logo=vercel&logoColor=white"/>
 
 **additionalLibraries:** React-Hook-Form, Framer-Motion
 
