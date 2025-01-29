@@ -19,7 +19,7 @@ function Intro() {
       },
       config: { duration: 1000 },
     });
-  const [textProps, setTextProps] = useSpring(() => ({
+  const [textProps] = useSpring(() => ({
     opacity: 1,
     transform: "translate(0%, 0%)",
     from: { opacity: 0, transform: "translate(0%, -100vh)" },
