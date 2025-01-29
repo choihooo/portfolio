@@ -39,7 +39,7 @@ function Intro() {
         <img src="developer.svg" />
       </div>
       <animated.div
-        className="text-left text-[48px] font-bold"
+        className="text-5xl font-bold text-left"
         style={textProps}
       >
         저는 <p className="inline text-me">UX와 DX를 추구</p>하는 Front-end
