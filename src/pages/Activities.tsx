@@ -150,7 +150,7 @@ function Activities() {
       {/* 모달 */}
       {isModalOpen && (
         <div
-          className="fixed top-[250vh] md:top-[300vh] left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-90"
+          className="fixed top-[270vh] md:top-[300vh] left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-90"
           onClick={handleModalClick}
         >
           <div className="relative w-auto h-auto">
