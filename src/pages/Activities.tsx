@@ -62,7 +62,7 @@ function Activities() {
   };
 
   return (
-    <div className="flex flex-col w-screen min-h-screen md:overflow-hidden">
+    <div className="relative flex flex-col w-screen min-h-screen md:overflow-hidden">
       <div className="text-[60px] font-bold mt-[80px] ml-[36px] md:ml-[100px]">
         Activities
       </div>
@@ -150,7 +150,7 @@ function Activities() {
       {/* 모달 */}
       {isModalOpen && (
         <div
-          className="fixed top-[270vh] md:top-[300vh] left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-90"
+          className="absolute top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-90"
           onClick={handleModalClick}
         >
           <div className="relative w-auto h-auto">
