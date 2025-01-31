@@ -3,15 +3,6 @@ import { useNavigate } from "react-router-dom";
 import NonProjectButton from "../components/NonProjectButton";
 import ProjectButton from "../components/ProjectButton";
 
-interface TechStack {
-  frontend: string[];
-  stateManagement: string[];
-  styling: string[];
-  buildTool: string[];
-  deployment: string[];
-  additionalLibraries: string[];
-}
-
 interface ProjectOverview {
   description: string;
   name: string;
@@ -22,7 +13,8 @@ interface ProjectOverview {
 interface ProjectItem {
   projectOverview: ProjectOverview;
   type: "project";
-  techStack: TechStack;
+  techStack: string[]; // 문자열 배열로 변경
+  features: string[];
 }
 
 interface ButtonItem {
@@ -49,8 +41,10 @@ const Project: React.FC = () => {
       .then((data) => {
         setProjects(
           data.projects.map((project: any) => ({
-            ...project,
+            projectOverview: project.projectOverview,
             type: "project",
+            techStack: project.techStack,
+            features: project.features,
           }))
         );
       })
@@ -104,16 +98,17 @@ const Project: React.FC = () => {
           </button>
         </div>
         <div className="grid justify-center grid-cols-1 grid-rows-2 gap-6 md:grid-cols-3">
-          {currentItems.map((item, index) => {
+          {currentItems.map((item) => {
             if (isButtonItem(item)) {
-              return <NonProjectButton key={index} project={item.label} />;
+              return <NonProjectButton key={item.id} project={item.label} />;
             } else {
               return (
                 <ProjectButton
-                  key={index}
+                  key={item.projectOverview.id}
                   name={item.projectOverview.name}
                   description={item.projectOverview.description}
                   techStack={item.techStack}
+                  features={item.features}
                   onClick={() => handleProjectClick(item.projectOverview.name)}
                 />
               );

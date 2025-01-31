@@ -1,18 +1,10 @@
 import React from "react";
 
-interface TechStack {
-  frontend: string[];
-  stateManagement: string[];
-  styling: string[];
-  buildTool: string[];
-  deployment: string[];
-  additionalLibraries: string[];
-}
-
 interface ProjectButtonProps {
   name: string;
   description: string;
-  techStack: TechStack;
+  techStack: string[]; // TechStack을 문자열 배열로 받음
+  features: string[]; // 추가된 기능 목록을 표시하기 위한 배열
   onClick: () => void;
 }
 
@@ -20,25 +12,26 @@ const ProjectButton: React.FC<ProjectButtonProps> = ({
   name,
   description,
   techStack,
+  features,
   onClick,
 }) => {
-  // 모든 기술 스택을 하나의 배열로 결합
-  const formattedTechStack = [
-    ...techStack.frontend,
-    ...techStack.stateManagement,
-    ...techStack.styling,
-    ...techStack.buildTool,
-    ...techStack.deployment,
-    ...techStack.additionalLibraries,
-  ].join(", ");
+  // 모든 기술 스택을 문자열로 결합
+  const formattedTechStack = techStack.join(", ");
 
   return (
     <div
-      className="text-black p-5 bg-white rounded-lg w-[300px] min-h-[300px] cursor-pointer md:w-[400px] md:h-[300px]"
+      className="text-black p-5 bg-white rounded-lg w-[300px] min-h-[300px] cursor-pointer md:w-[400px] md:min-h-[350px]"
       onClick={onClick}
     >
       <h2 className="text-3xl font-bold text-left">{name}</h2>
-      <p className="h-[100px] mt-5">{description}</p>
+      <p className="mt-2 ">{description}</p>
+      <div className="mt-3 ">
+        <ul className="pl-5 list-disc min-h-[9rem]">
+          {features.map((feature, index) => (
+            <li key={index}>{feature}</li>
+          ))}
+        </ul>
+      </div>
       <div className="p-2 mt-3 border border-solid rounded-lg border-me">
         <p>{formattedTechStack}</p>
       </div>

@@ -14,7 +14,7 @@ interface Experience {
   role: string;
   details: string[];
   image: string;
-  post?: { [key: string]: string }; // 포스트 항목 추가 (key: string, url: string 형식)
+  post?: { [key: string]: string };
 }
 
 function Activities() {
@@ -22,9 +22,8 @@ function Activities() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string>("");
 
-  // 페이지네이션 관련 상태
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 3; // 한 페이지에 표시할 항목 수
+  const itemsPerPage = 3;
 
   useEffect(() => {
     fetch("/data/activities.json")
@@ -35,12 +34,10 @@ function Activities() {
       .catch((error) => console.error("Error loading data:", error));
   }, []);
 
-  // 페이지 전환 함수
   const handlePrevPage = () => setCurrentPage(Math.max(0, currentPage - 1));
   const handleNextPage = () =>
     setCurrentPage(Math.min(totalPages - 1, currentPage + 1));
 
-  // 전체 페이지 수 계산
   const totalPages = Math.ceil(experiences.length / itemsPerPage);
   const indexOfLastItem = (currentPage + 1) * itemsPerPage;
   const indexOfFirstItem = currentPage * itemsPerPage;
@@ -62,11 +59,11 @@ function Activities() {
   };
 
   return (
-    <div className="relative flex flex-col w-screen min-h-screen md:overflow-hidden">
+    <div className="relative flex flex-col w-screen min-h-screen">
       <div className="text-[60px] font-bold mt-[80px] ml-[36px] md:ml-[100px]">
         Activities
       </div>
-      <div className="flex flex-col items-center justify-center w-full mt-[100px]">
+      <div className="flex flex-col items-center justify-center w-full mt-[50px]">
         <div className="flex justify-end gap-4 mb-3 max-w-[600px] min-w-[200px] w-[80%]">
           <button
             onClick={handlePrevPage}
@@ -83,7 +80,7 @@ function Activities() {
             ▶
           </button>
         </div>
-        <div className="max-w-[600px] min-w-[200px] w-[80%] h-[300px]">
+        <div className="max-w-[600px] min-w-[200px] w-[80%]">
           <Accordion type="single" collapsible className="w-full">
             {currentItems.map((experience, index) => (
               <AccordionItem key={index} value={`item-${index}`}>
