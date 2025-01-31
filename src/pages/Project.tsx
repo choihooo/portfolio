@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import NonProjectButton from "../components/NonProjectButton";
 import ProjectButton from "../components/ProjectButton";
 
 interface ProjectOverview {
@@ -17,23 +16,21 @@ interface ProjectItem {
   features: string[];
 }
 
-interface ButtonItem {
-  type: "mainButton" | "subButton";
-  label: string;
-  id: string;
-}
-
-type ProjectOrButton = ProjectItem | ButtonItem;
-
-function isButtonItem(item: ProjectOrButton): item is ButtonItem {
-  return item.type === "mainButton" || item.type === "subButton";
-}
-
 const Project: React.FC = () => {
   const navigate = useNavigate();
   const [projects, setProjects] = useState<ProjectItem[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 6;
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const itemsPerPage = screenWidth > 1280 ? 6 : screenWidth <= 768 ? 1 : 4;
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     fetch("/data/projects.json")
@@ -51,24 +48,10 @@ const Project: React.FC = () => {
       .catch((error) => console.error("Failed to fetch projects", error));
   }, []);
 
-  const mainProjects = projects.filter(
-    (project) => project.projectOverview.type === "main"
-  );
-  const subProjects = projects.filter(
-    (project) => project.projectOverview.type === "sub"
-  );
-
-  const allItems: ProjectOrButton[] = [
-    { type: "mainButton", label: "Main Projects", id: "main" },
-    ...mainProjects,
-    { type: "subButton", label: "Sub Projects", id: "sub" },
-    ...subProjects,
-  ];
-
-  const totalPages = Math.ceil(allItems.length / itemsPerPage);
+  const totalPages = Math.ceil(projects.length / itemsPerPage);
   const indexOfLastItem = (currentPage + 1) * itemsPerPage;
   const indexOfFirstItem = currentPage * itemsPerPage;
-  const currentItems = allItems.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = projects.slice(indexOfFirstItem, indexOfLastItem);
 
   const handlePrevPage = () => setCurrentPage(Math.max(0, currentPage - 1));
   const handleNextPage = () =>
@@ -97,23 +80,23 @@ const Project: React.FC = () => {
             ▶
           </button>
         </div>
-        <div className="grid justify-center grid-cols-1 grid-rows-2 gap-6 md:grid-cols-3">
-          {currentItems.map((item) => {
-            if (isButtonItem(item)) {
-              return <NonProjectButton key={item.id} project={item.label} />;
-            } else {
-              return (
-                <ProjectButton
-                  key={item.projectOverview.id}
-                  name={item.projectOverview.name}
-                  description={item.projectOverview.description}
-                  techStack={item.techStack}
-                  features={item.features}
-                  onClick={() => handleProjectClick(item.projectOverview.name)}
-                />
-              );
-            }
-          })}
+        <div
+          className={`grid justify-center grid-cols-1 gap-6 ${
+            screenWidth <= 1280 && screenWidth > 768
+              ? "md:grid-cols-2"
+              : "md:grid-cols-3"
+          }`}
+        >
+          {currentItems.map((item) => (
+            <ProjectButton
+              key={item.projectOverview.id}
+              name={item.projectOverview.name}
+              description={item.projectOverview.description}
+              techStack={item.techStack}
+              features={item.features}
+              onClick={() => handleProjectClick(item.projectOverview.name)}
+            />
+          ))}
         </div>
       </div>
     </div>
