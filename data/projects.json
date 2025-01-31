@@ -3,7 +3,6 @@
     {
       "projectOverview": {
         "name": "Moping",
-        "developmentPeriod": "2023.07 ~ 2023.09",
         "type": "main",
         "description": "장소를 아카이빙해 약속 장소를 투표로 정하는 플랫폼"
       },
@@ -16,7 +15,6 @@
     {
       "projectOverview": {
         "name": "Devocean 개선 과제",
-        "developmentPeriod": "2024.08 ~ 2024.10",
         "type": "main",
         "description": "데보션 마이페이지를 수정해 사용자의 활동률을 증가시키기 위한 프로젝트였습니다."
       },
@@ -28,7 +26,6 @@
     },{
       "projectOverview": {
         "name": "개인 블로그 HOWU",
-        "developmentPeriod": "2024.11 ~",
         "type": "sub",
         "description": "마크다운으로 작성된 글을 정적으로 보여주는 개인 블로그"
       },
@@ -36,6 +33,17 @@
       "features": [
         "블로그 플랫폼에서의 개인화를 위해 직접 개발",
         "별도의 서버 없이 Vercel 배포를 통해 개발"
+      ]
+    },{
+      "projectOverview": {
+        "name": "MakeMD",
+        "type": "sub",
+        "description": "개인 블로그 포스팅을 쉽게하기 위한 vscode 익스텐션"
+      },
+      "techStack": ["TypeScript", "Webpack"],
+      "features": [
+        "포스트 템플릿 자동 생성",
+        "글 하이라이팅 기능"
       ]
     }
   ]
