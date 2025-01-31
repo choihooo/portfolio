@@ -30,12 +30,12 @@
         "name": "개인 블로그 HOWU",
         "developmentPeriod": "2024.11 ~",
         "type": "sub",
-        "description": ""
+        "description": "마크다운으로 작성된 글을 정적으로 보여주는 개인 블로그"
       },
-      "techStack": ["JSP", "jQuery", "Chart.js"],
+      "techStack": ["React", "JavaScript", "vite", "Vercel", "react-helmet", "SCSS"],
       "features": [
-        "마이페이지 대시보드: 사용자의 활동을 시각화 시켜 활동률 증가",
-        "활동 점수 순위: 게이미피케이션 요소를 적용해 경쟁심을 발생시켜 활동률 증가"
+        "블로그 플랫폼에서의 개인화를 위해 직접 개발",
+        "별도의 서버 없이 Vercel 배포를 통해 개발"
       ]
     }
   ]
