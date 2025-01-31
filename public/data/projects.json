@@ -3,7 +3,7 @@
     {
       "projectOverview": {
         "name": "Moping",
-        "developmentPeriod": "2023.07 - 2023.09",
+        "developmentPeriod": "2023.07 ~ 2023.09",
         "type": "main",
         "description": "장소를 아카이빙해 약속 장소를 투표로 정하는 플랫폼"
       },
@@ -16,9 +16,21 @@
     {
       "projectOverview": {
         "name": "Devocean 개선 과제",
-        "developmentPeriod": "2024.08 - 2024.10",
+        "developmentPeriod": "2024.08 ~ 2024.10",
         "type": "main",
         "description": "데보션 마이페이지를 수정해 사용자의 활동률을 증가시키기 위한 프로젝트였습니다."
+      },
+      "techStack": ["JSP", "jQuery", "Chart.js"],
+      "features": [
+        "마이페이지 대시보드: 사용자의 활동을 시각화 시켜 활동률 증가",
+        "활동 점수 순위: 게이미피케이션 요소를 적용해 경쟁심을 발생시켜 활동률 증가"
+      ]
+    },{
+      "projectOverview": {
+        "name": "개인 블로그 HOWU",
+        "developmentPeriod": "2024.11 ~",
+        "type": "sub",
+        "description": ""
       },
       "techStack": ["JSP", "jQuery", "Chart.js"],
       "features": [
