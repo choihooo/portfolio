@@ -28,9 +28,6 @@ jobs:
     - name: Output folder structure
       run: ls -lah  
 
-    - name: Preserve CNAME
-      run: echo "portfolio.howu.run" > dist/CNAME
-
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4  
       with:

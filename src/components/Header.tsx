@@ -112,7 +112,7 @@ function Header({ activeIndex }: HeaderProps) {
         <div className="flex items-center gap-3 px-10 text-left">
           <animated.button
             onClick={() => {
-              window.open("https://blog.howu.run", "_blank");
+              window.open("https://howu.run", "_blank");
             }}
             style={blogAnimation}
           >
