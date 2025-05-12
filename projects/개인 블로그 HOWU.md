@@ -30,7 +30,7 @@
 
 ## **프로젝트 링크**
 
-- [Live Demo](https://blog.howu.run/)
+- [Live Demo](https://howu.run/)
 
 ## **앞으로 개선점**
 
