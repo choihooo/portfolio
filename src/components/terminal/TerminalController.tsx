@@ -16,7 +16,7 @@ import {
   normalizeCommandName,
   resolveCommand,
 } from "@/commands/registry";
-import { askPortfolioStream, preloadPortfolioModel } from "@/ai/ask-portfolio";
+import { askPortfolioStream } from "@/ai/ask-portfolio";
 import type { SearchResult } from "@/ai/types";
 
 type Message =
@@ -330,8 +330,10 @@ export default function TerminalController() {
   const [busy, setBusy] = useState(false);
   const [selectedCommandIndex, setSelectedCommandIndex] = useState(0);
   const [commandMenuDismissed, setCommandMenuDismissed] = useState(false);
-  const [modelPhase, setModelPhase] = useState<ModelPhase>("loading");
-  const [modelStatus, setModelStatus] = useState("모델 로딩 준비 중...");
+  const [modelPhase] = useState<ModelPhase>("fallback");
+  const [modelStatus] = useState(
+    "검색 모드로 바로 질문할 수 있습니다. 로컬 AI는 가능할 때만 사용합니다."
+  );
   const threadEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const commandMetadata = useMemo(() => getCommandMetadata(), []);
@@ -363,35 +365,6 @@ export default function TerminalController() {
   useEffect(() => {
     threadEndRef.current?.scrollIntoView({ block: "end" });
   }, [messages, modelPhase, modelStatus]);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    void preloadPortfolioModel((status) => {
-      if (!cancelled) {
-        setModelStatus(status);
-      }
-    })
-      .then((available) => {
-        if (cancelled) return;
-        setModelPhase(available ? "ready" : "fallback");
-        setModelStatus(
-          available
-            ? "로컬 AI 모델로 답변을 생성할 수 있습니다."
-            : "AI 모델을 사용할 수 없어 검색 결과로 답변합니다."
-        );
-      })
-      .catch((err) => {
-        if (cancelled) return;
-        console.warn("Model preload failed:", err);
-        setModelPhase("fallback");
-        setModelStatus("AI 모델을 사용할 수 없어 검색 결과로 답변합니다.");
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   const append = (message: Message) => {
     setMessages((current) => [...current, message]);

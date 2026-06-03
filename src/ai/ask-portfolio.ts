@@ -9,6 +9,13 @@ let llmInitialized = false;
 let llmAvailable = false;
 let llmInitPromise: Promise<boolean> | null = null;
 const MIN_RELEVANCE_SCORE = 0.82;
+const LLM_INTERACTIVE_WAIT_MS = 8_000;
+
+function wait(ms: number): Promise<false> {
+  return new Promise((resolve) => {
+    window.setTimeout(() => resolve(false), ms);
+  });
+}
 
 async function ensureLlmReady(
   onProgress?: (status: string) => void
@@ -44,6 +51,25 @@ async function ensureLlmReady(
   llmAvailable = await llmInitPromise;
   llmInitPromise = null;
   return llmAvailable;
+}
+
+async function tryEnsureLlmReady(
+  onProgress?: (status: string) => void
+): Promise<boolean> {
+  let active = true;
+  const guardedProgress = onProgress
+    ? (status: string) => {
+        if (active) onProgress(status);
+      }
+    : undefined;
+
+  const available = await Promise.race([
+    ensureLlmReady(guardedProgress),
+    wait(LLM_INTERACTIVE_WAIT_MS),
+  ]);
+
+  active = false;
+  return available;
 }
 
 export async function preloadPortfolioModel(
@@ -95,7 +121,7 @@ export async function askPortfolio(
   let modelName: string | undefined;
 
   const manager = getLlmManager();
-  await ensureLlmReady(onProgress);
+  await tryEnsureLlmReady(onProgress);
 
   if (llmAvailable && manager.isReady()) {
     try {
@@ -148,7 +174,7 @@ export async function askPortfolioStream(
   }
 
   const manager = getLlmManager();
-  await ensureLlmReady(onProgress);
+  await tryEnsureLlmReady(onProgress);
 
   if (llmAvailable && manager.isReady()) {
     try {
