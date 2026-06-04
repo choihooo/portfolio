@@ -78,10 +78,46 @@ function parseColoredText(text: string): ReactNode[] {
   const normalized = text.replaceAll("{br}", "\n");
   const parts: ReactNode[] = [];
   const regex = /\{\/?(green|yellow|blue|red|purple|cyan|dim|bold)\}/g;
+  const linkRegex = /(https?:\/\/[^\s]+|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})/g;
   const stack: string[] = [];
   let lastIndex = 0;
   let key = 0;
   let match: RegExpExecArray | null;
+
+  const linkifyText = (value: string) => {
+    const nodes: ReactNode[] = [];
+    let linkLastIndex = 0;
+    let linkMatch: RegExpExecArray | null;
+    linkRegex.lastIndex = 0;
+
+    while ((linkMatch = linkRegex.exec(value)) !== null) {
+      if (linkMatch.index > linkLastIndex) {
+        nodes.push(value.slice(linkLastIndex, linkMatch.index));
+      }
+
+      const href = linkMatch[0].startsWith("http")
+        ? linkMatch[0]
+        : `mailto:${linkMatch[0]}`;
+      nodes.push(
+        <a
+          key={`link-${key++}`}
+          className="command-link"
+          href={href}
+          target={href.startsWith("http") ? "_blank" : undefined}
+          rel={href.startsWith("http") ? "noreferrer" : undefined}
+        >
+          {linkMatch[0]}
+        </a>
+      );
+      linkLastIndex = linkMatch.index + linkMatch[0].length;
+    }
+
+    if (linkLastIndex < value.length) {
+      nodes.push(value.slice(linkLastIndex));
+    }
+
+    return nodes.length > 0 ? nodes : [value];
+  };
 
   const pushText = (value: string) => {
     if (!value) return;
@@ -95,11 +131,11 @@ function parseColoredText(text: string): ReactNode[] {
     if (style.color || style.fontWeight) {
       parts.push(
         <span key={key++} style={style}>
-          {value}
+          {linkifyText(value)}
         </span>
       );
     } else {
-      parts.push(value);
+      parts.push(...linkifyText(value));
     }
   };
 
@@ -149,10 +185,12 @@ function SlashCommandMenu({
   items,
   selectedIndex,
   menuId,
+  onSelect,
 }: {
   items: CommandMeta[];
   selectedIndex: number;
   menuId: string;
+  onSelect: (command: CommandMeta) => void;
 }) {
   if (items.length === 0) {
     return null;
@@ -167,7 +205,8 @@ function SlashCommandMenu({
     >
       <div className="app-command-menu-header">commands</div>
       {items.map((command, index) => (
-        <div
+        <button
+          type="button"
           key={command.name}
           id={`${menuId}-${command.name}`}
           className={
@@ -177,10 +216,14 @@ function SlashCommandMenu({
           }
           role="option"
           aria-selected={index === selectedIndex}
+          onMouseDown={(event) => {
+            event.preventDefault();
+          }}
+          onClick={() => onSelect(command)}
         >
           <span className="app-command-name">/{command.name}</span>
           <span className="app-command-description">{command.description}</span>
-        </div>
+        </button>
       ))}
       <div className="app-command-menu-footer">tab to complete · enter to run</div>
     </div>
@@ -225,7 +268,13 @@ function ModelStatusMessage({
   );
 }
 
-function MessageView({ message }: { message: Message }) {
+function MessageView({
+  message,
+  onQuickPrompt,
+}: {
+  message: Message;
+  onQuickPrompt?: (prompt: string) => void;
+}) {
   if (message.type === "welcome") {
     return (
       <article className="message message-assistant message-welcome">
@@ -239,9 +288,14 @@ function MessageView({ message }: { message: Message }) {
           </p>
           <div className="quick-prompt-grid">
             {QUICK_PROMPTS.map((prompt) => (
-              <span key={prompt} className="quick-prompt">
+              <button
+                key={prompt}
+                type="button"
+                className="quick-prompt"
+                onClick={() => onQuickPrompt?.(prompt)}
+              >
                 {prompt}
-              </span>
+              </button>
             ))}
           </div>
         </div>
@@ -365,6 +419,16 @@ export default function TerminalController() {
   useEffect(() => {
     threadEndRef.current?.scrollIntoView({ block: "end" });
   }, [messages, modelPhase, modelStatus]);
+
+  useEffect(() => {
+    if (busy) return;
+
+    const frameId = window.requestAnimationFrame(() => {
+      textareaRef.current?.focus();
+    });
+
+    return () => window.cancelAnimationFrame(frameId);
+  }, [busy]);
 
   const append = (message: Message) => {
     setMessages((current) => [...current, message]);
@@ -506,23 +570,17 @@ export default function TerminalController() {
     });
   };
 
-  const submit = async () => {
+  const selectCommand = (command: CommandMeta) => {
+    setInput(completeSlashInput(input, command.name));
+    setCommandMenuDismissed(true);
+    window.requestAnimationFrame(() => textareaRef.current?.focus());
+  };
+
+  const submitValue = async (rawValue: string) => {
     if (busy) return;
 
-    let value = input.trim();
+    const value = rawValue.trim();
     if (!value) return;
-
-    const split = splitInput(value);
-    if (
-      value.startsWith("/") &&
-      !isKnownCommand(split.commandName) &&
-      commandMenuItems.length > 0
-    ) {
-      const selected = commandMenuItems[selectedCommandIndex];
-      if (selected) {
-        value = completeSlashInput(value, selected.name).trim();
-      }
-    }
 
     setInput("");
     setSelectedCommandIndex(0);
@@ -540,8 +598,11 @@ export default function TerminalController() {
       }
     } finally {
       setBusy(false);
-      textareaRef.current?.focus();
     }
+  };
+
+  const submit = async () => {
+    await submitValue(input);
   };
 
   const handleSubmit = (event: FormEvent) => {
@@ -609,10 +670,14 @@ export default function TerminalController() {
           className="codex-thread"
           role="log"
           aria-live="polite"
-          aria-relevant="additions text"
+          aria-relevant="additions"
         >
           {welcomeMessages.map((message) => (
-            <MessageView key={message.id} message={message} />
+            <MessageView
+              key={message.id}
+              message={message}
+              onQuickPrompt={submitValue}
+            />
           ))}
           {chatMessages.length === 0 ? (
             <ModelStatusMessage phase={modelPhase} status={modelStatus} />
@@ -629,6 +694,7 @@ export default function TerminalController() {
               items={commandMenuItems}
               selectedIndex={selectedCommandIndex}
               menuId={commandMenuId}
+              onSelect={selectCommand}
             />
             <div className="codex-composer">
               <textarea

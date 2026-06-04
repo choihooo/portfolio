@@ -8,7 +8,7 @@ let chunks: RagChunk[] | null = null;
 let llmInitialized = false;
 let llmAvailable = false;
 let llmInitPromise: Promise<boolean> | null = null;
-const MIN_RELEVANCE_SCORE = 0.82;
+const MIN_RELEVANCE_SCORE = 0.78;
 const LLM_INTERACTIVE_WAIT_MS = 8_000;
 
 function wait(ms: number): Promise<false> {
@@ -102,10 +102,12 @@ export async function askPortfolio(
 
   // 3. Search
   onProgress?.("관련 문서 검색 중...");
-  const results = filterRelevantResults(rankResultsForQuestion(
+  const results = rankResultsForQuestion(
     question,
-    searchChunks(queryEmbedding, chunks, 12)
-  )).slice(0, 5);
+    searchChunks(queryEmbedding, chunks, 16)
+  )
+    .filter((result) => isRelevantResult(question, result))
+    .slice(0, 5);
 
   if (results.length === 0) {
     return {
@@ -158,10 +160,12 @@ export async function askPortfolioStream(
   onProgress?.("질문 분석 중...");
   const queryEmbedding = await embedQuery(question);
   onProgress?.("관련 문서 검색 중...");
-  const results = filterRelevantResults(rankResultsForQuestion(
+  const results = rankResultsForQuestion(
     question,
-    searchChunks(queryEmbedding, chunks, 12)
-  )).slice(0, 5);
+    searchChunks(queryEmbedding, chunks, 16)
+  )
+    .filter((result) => isRelevantResult(question, result))
+    .slice(0, 5);
 
   if (results.length === 0) {
     const answer = "관련된 포트폴리오 데이터를 찾을 수 없습니다.";
@@ -213,11 +217,28 @@ function buildSearchAnswer(results: SearchResult[]): string {
 
   for (const r of topResults) {
     const text = cleanContextText(r.chunk.text);
-    const preview = text.slice(0, 150);
-    answer += `[${r.chunk.title}]\n${preview}${text.length > 150 ? "..." : ""}\n\n`;
+    const preview = buildContextPreview(text);
+    answer += `[${r.chunk.title}]\n${preview}\n\n`;
   }
 
   return answer.trim();
+}
+
+function buildContextPreview(text: string): string {
+  const normalized = text.replace(/\s+/g, " ").trim();
+  if (normalized.length <= 420) return normalized;
+
+  const sentenceEnds = [...normalized.slice(0, 520).matchAll(/[.!?。！？](?=\s|$)/g)]
+    .map((match) => match.index ?? 0)
+    .filter((index) => index >= 260 && index <= 420);
+  const sentenceEnd = sentenceEnds.at(-1);
+  if (sentenceEnd !== undefined) {
+    return `${normalized.slice(0, sentenceEnd + 1).trim()} ...`;
+  }
+
+  const boundary = normalized.lastIndexOf(" ", 420);
+  const end = boundary >= 260 ? boundary : 420;
+  return `${normalized.slice(0, end).trim()} ...`;
 }
 
 function buildLlmContext(results: SearchResult[]): string {
@@ -228,13 +249,17 @@ function buildLlmContext(results: SearchResult[]): string {
       const section = r.chunk.headingPath?.length
         ? ` > ${r.chunk.headingPath.join(" > ")}`
         : "";
-      return `[${r.chunk.id} | ${r.chunk.title}${section}]: ${text}`;
+      const metadata = [
+        r.chunk.slug ? `slug=${r.chunk.slug}` : "",
+        r.chunk.url ? `url=${r.chunk.url}` : "",
+        r.chunk.github ? `github=${r.chunk.github}` : "",
+      ]
+        .filter(Boolean)
+        .join(", ");
+      const metadataSuffix = metadata ? ` | ${metadata}` : "";
+      return `[${r.chunk.id} | ${r.chunk.title}${section}${metadataSuffix}]: ${text}`;
     })
     .join("\n\n");
-}
-
-function filterRelevantResults(results: SearchResult[]): SearchResult[] {
-  return results.filter((result) => result.score >= MIN_RELEVANCE_SCORE);
 }
 
 function rankResultsForQuestion(
@@ -242,21 +267,7 @@ function rankResultsForQuestion(
   results: SearchResult[]
 ): SearchResult[] {
   const normalized = question.toLowerCase();
-
-  const preferredTypes = new Set<RagChunk["sourceType"]>();
-  if (/프로젝트|project|포트폴리오|구현|개발/.test(normalized)) {
-    preferredTypes.add("project");
-    preferredTypes.add("resume");
-  }
-  if (/경력|경험|회사|직무|resume|experience/.test(normalized)) {
-    preferredTypes.add("resume");
-    preferredTypes.add("project");
-  }
-  if (/기술|스택|skill|react|next|typescript|성능|최적화/.test(normalized)) {
-    preferredTypes.add("resume");
-    preferredTypes.add("project");
-    preferredTypes.add("about");
-  }
+  const preferredTypes = getPreferredTypesForQuestion(normalized);
 
   return [...results].sort((a, b) => {
     return (
@@ -313,6 +324,35 @@ function scoreResultForQuestion(
   }
 
   return result.score + boost;
+}
+
+function isRelevantResult(question: string, result: SearchResult): boolean {
+  const normalized = question.toLowerCase();
+  return scoreResultForQuestion(
+    normalized,
+    result,
+    getPreferredTypesForQuestion(normalized)
+  ) >= MIN_RELEVANCE_SCORE;
+}
+
+function getPreferredTypesForQuestion(
+  normalizedQuestion: string
+): Set<RagChunk["sourceType"]> {
+  const preferredTypes = new Set<RagChunk["sourceType"]>();
+  if (/프로젝트|project|포트폴리오|구현|개발/.test(normalizedQuestion)) {
+    preferredTypes.add("project");
+    preferredTypes.add("resume");
+  }
+  if (/경력|경험|회사|직무|resume|experience/.test(normalizedQuestion)) {
+    preferredTypes.add("resume");
+    preferredTypes.add("project");
+  }
+  if (/기술|스택|skill|react|next|typescript|성능|최적화/.test(normalizedQuestion)) {
+    preferredTypes.add("resume");
+    preferredTypes.add("project");
+    preferredTypes.add("about");
+  }
+  return preferredTypes;
 }
 
 function cleanContextText(text: string): string {

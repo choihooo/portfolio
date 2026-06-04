@@ -11,6 +11,7 @@ import { neofetch } from './neofetch';
 import { date } from './date';
 import { whoami } from './whoami';
 import { unknown } from './unknown';
+import { commandMetadata } from './metadata';
 
 export type CommandGroup = 'portfolio' | 'ai' | 'system';
 
@@ -42,86 +43,6 @@ const aliases: Record<string, string> = {
   '?': 'help',
 };
 
-const metadata: CommandMeta[] = [
-  {
-    name: 'about',
-    aliases: ['cat'],
-    description: 'Who is Choi Ho?',
-    group: 'portfolio',
-    examples: ['/about'],
-  },
-  {
-    name: 'projects',
-    aliases: ['ls'],
-    description: 'View portfolio projects',
-    group: 'portfolio',
-    examples: ['/projects', '/projects commerce-rebuild'],
-  },
-  {
-    name: 'skills',
-    aliases: [],
-    description: 'Technical skills and proficiency',
-    group: 'portfolio',
-    examples: ['/skills'],
-  },
-  {
-    name: 'experience',
-    aliases: [],
-    description: 'Work experience timeline',
-    group: 'portfolio',
-    examples: ['/experience'],
-  },
-  {
-    name: 'contact',
-    aliases: [],
-    description: 'Contact links',
-    group: 'portfolio',
-    examples: ['/contact'],
-  },
-  {
-    name: 'ai',
-    aliases: [],
-    description: 'Ask the portfolio AI anything',
-    group: 'ai',
-    examples: ['/ai 프론트엔드 최적화 경험이 있나요?'],
-  },
-  {
-    name: 'help',
-    aliases: ['?'],
-    description: 'Show available commands',
-    group: 'system',
-    examples: ['/help'],
-  },
-  {
-    name: 'clear',
-    aliases: [],
-    description: 'Clear the transcript',
-    group: 'system',
-    examples: ['/clear'],
-  },
-  {
-    name: 'neofetch',
-    aliases: [],
-    description: 'Portfolio system info',
-    group: 'system',
-    examples: ['/neofetch'],
-  },
-  {
-    name: 'date',
-    aliases: [],
-    description: 'Current date and time',
-    group: 'system',
-    examples: ['/date'],
-  },
-  {
-    name: 'whoami',
-    aliases: [],
-    description: 'Identify the visitor',
-    group: 'system',
-    examples: ['/whoami'],
-  },
-];
-
 export function normalizeCommandName(input: string): string {
   const normalizedInput = input.trim().toLowerCase();
   return aliases[normalizedInput] ?? normalizedInput;
@@ -137,7 +58,7 @@ export function getCommandNames(): string[] {
 }
 
 export function getCommandMetadata(): CommandMeta[] {
-  return metadata;
+  return commandMetadata;
 }
 
 export function isKnownCommand(input: string): boolean {

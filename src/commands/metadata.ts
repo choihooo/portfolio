@@ -1,0 +1,81 @@
+import type { CommandMeta } from "./registry";
+
+export const commandMetadata: CommandMeta[] = [
+  {
+    name: "about",
+    aliases: ["cat"],
+    description: "Who is Choi Ho?",
+    group: "portfolio",
+    examples: ["/about"],
+  },
+  {
+    name: "projects",
+    aliases: ["ls"],
+    description: "View portfolio projects",
+    group: "portfolio",
+    examples: ["/projects", "/projects bugi-download"],
+  },
+  {
+    name: "skills",
+    aliases: [],
+    description: "Technical skills and proficiency",
+    group: "portfolio",
+    examples: ["/skills"],
+  },
+  {
+    name: "experience",
+    aliases: [],
+    description: "Work experience timeline",
+    group: "portfolio",
+    examples: ["/experience"],
+  },
+  {
+    name: "contact",
+    aliases: [],
+    description: "Contact links",
+    group: "portfolio",
+    examples: ["/contact"],
+  },
+  {
+    name: "ai",
+    aliases: [],
+    description: "Ask the portfolio AI anything",
+    group: "ai",
+    examples: ["/ai 프론트엔드 최적화 경험이 있나요?"],
+  },
+  {
+    name: "help",
+    aliases: ["?"],
+    description: "Show available commands",
+    group: "system",
+    examples: ["/help"],
+  },
+  {
+    name: "clear",
+    aliases: [],
+    description: "Clear the transcript",
+    group: "system",
+    examples: ["/clear"],
+  },
+  {
+    name: "neofetch",
+    aliases: [],
+    description: "Portfolio system info",
+    group: "system",
+    examples: ["/neofetch"],
+  },
+  {
+    name: "date",
+    aliases: [],
+    description: "Current date and time",
+    group: "system",
+    examples: ["/date"],
+  },
+  {
+    name: "whoami",
+    aliases: [],
+    description: "Identify the visitor",
+    group: "system",
+    examples: ["/whoami"],
+  },
+];

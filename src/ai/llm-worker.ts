@@ -25,6 +25,9 @@ type WorkerRequest =
     };
 
 let engine: MLCEngine | null = null;
+const COMPLETION_MAX_TOKENS = 1024;
+const TOKEN_LIMIT_NOTICE =
+  "\n\n[답변이 모델 토큰 한도에 도달해 일부 생략됐습니다. 더 구체적으로 질문하면 이어서 답할 수 있습니다.]";
 
 const MODEL_CANDIDATES = [
   "Qwen3.5-0.8B-q4f16_1-MLC",
@@ -36,6 +39,14 @@ function stripThinking(text: string): string {
     .replace(/<think>[\s\S]*?<\/think>\s*/gi, "")
     .replace(/<\/?think>/gi, "")
     .trimStart();
+}
+
+function appendTokenLimitNotice(text: string, finishReason?: string | null): string {
+  if (finishReason !== "length" || text.includes("토큰 한도")) {
+    return text;
+  }
+
+  return `${text.trimEnd()}${TOKEN_LIMIT_NOTICE}`;
 }
 
 async function tryLoadModel(): Promise<string | null> {
@@ -110,7 +121,7 @@ self.onmessage = async (e: MessageEvent<WorkerRequest>) => {
         const activeEngine = engine;
         const reply = await activeEngine.chat.completions.create({
           messages: message.data.messages,
-          max_tokens: 512,
+          max_tokens: COMPLETION_MAX_TOKENS,
           temperature: 0.2,
           top_p: 0.8,
           frequency_penalty: 0.4,
@@ -118,7 +129,11 @@ self.onmessage = async (e: MessageEvent<WorkerRequest>) => {
           repetition_penalty: 1.08,
           extra_body: { enable_thinking: false },
         });
-        const text = stripThinking(reply.choices[0]?.message?.content ?? "");
+        const finishReason = reply.choices[0]?.finish_reason;
+        const text = appendTokenLimitNotice(
+          stripThinking(reply.choices[0]?.message?.content ?? ""),
+          finishReason
+        );
         postMessageForRequest(requestId, "generated", { text });
       } catch (error) {
         postMessageForRequest(requestId, "error", {
@@ -140,7 +155,7 @@ self.onmessage = async (e: MessageEvent<WorkerRequest>) => {
         const activeEngine = engine;
         const stream = await activeEngine.chat.completions.create({
           messages: message.data.messages,
-          max_tokens: 512,
+          max_tokens: COMPLETION_MAX_TOKENS,
           temperature: 0.2,
           top_p: 0.8,
           frequency_penalty: 0.4,
@@ -153,7 +168,9 @@ self.onmessage = async (e: MessageEvent<WorkerRequest>) => {
         let rawText = "";
         let visibleText = "";
         let insideThinking = false;
+        let finishReason: string | null | undefined;
         for await (const chunk of stream) {
+          finishReason = chunk.choices[0]?.finish_reason ?? finishReason;
           const delta = chunk.choices[0]?.delta.content ?? "";
           if (!delta) continue;
           rawText += delta;
@@ -172,7 +189,12 @@ self.onmessage = async (e: MessageEvent<WorkerRequest>) => {
           postMessageForRequest(requestId, "generated-chunk", { delta: visibleDelta });
         }
 
-        postMessageForRequest(requestId, "generated", { text: stripThinking(rawText) });
+        const finalText = appendTokenLimitNotice(stripThinking(rawText), finishReason);
+        const finalDelta = finalText.slice(visibleText.length);
+        if (finalDelta) {
+          postMessageForRequest(requestId, "generated-chunk", { delta: finalDelta });
+        }
+        postMessageForRequest(requestId, "generated", { text: finalText });
       } catch (error) {
         postMessageForRequest(requestId, "error", {
           error: String(error),

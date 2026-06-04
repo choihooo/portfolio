@@ -6,20 +6,30 @@
     "dev": "next dev",
     "rag:build": "tsx scripts/build-rag-index.ts",
     "rag:test": "tsx scripts/test-rag-index.ts",
+    "command:test": "tsx scripts/test-command-behavior.ts",
+    "package:test": "tsx scripts/test-package-config.ts",
+    "llm:test": "tsx scripts/test-llm-worker-config.ts",
+    "ai-answer:test": "tsx scripts/test-ai-answer-behavior.ts",
     "typecheck": "tsc --noEmit",
-    "test": "npm run rag:test",
-    "build": "next build",
+    "test": "npm run rag:test && npm run command:test && npm run package:test && npm run llm:test && npm run ai-answer:test",
+    "build": "npm run rag:build && next build",
     "build:with-rag": "npm run rag:build && next build",
     "start": "next start",
     "lint": "eslint"
+  },
+  "engines": {
+    "node": ">=20.9.0"
   },
   "dependencies": {
     "@huggingface/transformers": "^4.2.0",
     "@mlc-ai/web-llm": "^0.2.84",
     "dexie": "^4.4.3",
     "next": "^16.2.7",
-    "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "overrides": {
+    "postcss": "^8.5.15"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

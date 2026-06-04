@@ -1,26 +1,39 @@
 import type { CommandHandler } from './types';
+import { commandMetadata } from './metadata';
+
+const groupLabels = {
+  portfolio: "Portfolio",
+  ai: "AI",
+  system: "System",
+} as const;
 
 export const help: CommandHandler = () => {
-  const output = `
-{bold}Available commands{/bold}
+  const groups = commandMetadata.reduce<Record<string, typeof commandMetadata>>(
+    (acc, command) => {
+      acc[command.group] ??= [];
+      acc[command.group].push(command);
+      return acc;
+    },
+    {}
+  );
 
-{bold}Navigation{/bold}
-{green}/about{/green}       Who is Choi Ho?
-{green}/projects{/green}    View portfolio projects
-{green}/skills{/green}      Technical skills and proficiency
-{green}/experience{/green}  Work experience timeline
-{green}/contact{/green}     Get in touch
+  const sections = (["portfolio", "ai", "system"] as const)
+    .map((group) => {
+      const commands = groups[group] ?? [];
+      const rows = commands
+        .map((command) => {
+          const aliases = command.aliases.length
+            ? ` {dim}(${command.aliases.map((alias) => `/${alias}`).join(", ")}){/dim}`
+            : "";
+          return `{green}/${command.name.padEnd(11)}{/green}${aliases} ${command.description}`;
+        })
+        .join("\n");
 
-{bold}AI{/bold}
-{green}/ai{/green}          Ask the portfolio AI anything
+      return `{bold}${groupLabels[group]}{/bold}\n${rows}`;
+    })
+    .join("\n\n");
 
-{bold}System{/bold}
-{green}/help{/green}        Show this help message
-{green}/clear{/green}       Clear this chat
-{green}/date{/green}        Current date and time
-
-{dim}Tip: You can type / to open the command menu below the chat.{/dim}
-`;
+  const output = `{bold}Available commands{/bold}\n\n${sections}\n\n{dim}Tip: Type / to open the command menu. Tab completes a selected command; Enter runs exactly what you typed.{/dim}`;
 
   return { output: output.trim() };
 };
